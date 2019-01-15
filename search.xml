@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[说说对于Java的理解]]></title>
+    <url>%2F2018%2F05%2F10%2F%E8%AF%B4%E8%AF%B4%E5%AF%B9%E4%BA%8EJava%E7%9A%84%E7%90%86%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[基本回答​ Java是一门面向对象的语言，它主要有两个重要的特性。一是优秀的跨平台能力，就如官方所说的”write once,run anywhere”（书写一次，到处运行），二是Java中的GC(Garbage Collection)机制,Java通过垃圾收集器（Garbage Collector）回收分配内存，一般情况下，程序员不需要自己关心内存的分配和回收。 ​ 同时，Java日常开发中最常用到的就是JDK和JRE。其中JRE即Java的运行环境，包含了JVM和Java的类库等，JDK包括了JRE，它相比JRE提供了更多的工具，如编译器，Jconsole… ​ Java的跨平台特性与Java虚拟机的存在密不可分，可在不同的环境中运行。比如说Windows平台和Linux平台都有相应的JDK，安装好JDK后也就有了Java语言的运行环境。其实Java语言本身与其他的编程语言没有特别大的差异，并不是说Java语言可以跨平台，而是在不同的平台都有可以让Java语言运行的环境而已，所以才有了Java一次编译，到处运行这样的效果。​ 严格的讲，跨平台的语言不止Java一种，但Java是较为成熟的一种。“一次编译，到处运行”这种效果跟编译器有关。编程语言的处理需要编译器和解释器。Java虚拟机和DOS类似，相当于一个供程序运行的平台。“到处运行”的关键和前提就是JVM。因为在第二次编译中JVM起着关键作用。在可以运行Java虚拟机的地方都内含着一个JVM操作系统。从而使JAVA提供了各种不同平台上的虚拟机制，因此实现了“到处运行”的效果。 一点拓展​ 日常开发中，我们的Java代码会通过Javac编译成字节码，运行时，通过JVM内嵌的解释器将字节码转换成为最后的机器码。 ​ 在我们大部分开发中用的JVM中，Oracle JDK 提供的 Hotspot JVM，都提供JIT（Just-In-Time）编译器，也就是通常所说的动态编译器，能将运行时的一部分热点代码翻译成机器码（编译执行），所以Java并不完全是解释执行的语言。 ​ Java在编译期生成.class文件，通过JVM和字节码屏蔽了操作系统和硬件的细节。在运行时通过class-loader加载字节码，解释或编译执行，在JDK1.8中就是解释和编译混合的模式（-Xmixed）。 ​ 下图是摘自极客时间@Java核心技术36讲 杨晓峰前Oracle首席工程师总结的Java平台相对宽泛的蓝图： 大家可以据此更深层次的了解Java这门古老的语言。]]></content>
+      <categories>
+        <category>Java面试</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Java面试</tag>
+        <tag>Java基础</tag>
+      </tags>
+  </entry>
+</search>
