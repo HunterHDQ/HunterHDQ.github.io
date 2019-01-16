@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[final、finally、finalize有什么不同]]></title>
+    <url>%2F2018%2F05%2F16%2Ffinal%E3%80%81finally%E3%80%81finalize%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%2F</url>
+    <content type="text"><![CDATA[基本回答1.final可以用来修饰类、方法和变量。final修饰的类不可以被继承，修饰的变量不可以被修改，修饰的方法不可以被重写(Overwrite)。 2.finally表示Java保证重点代码一定要执行的一种机制。通常开发中，我们使用try-finally或者try-catch-finally来执行一些特定的操作，比如关闭JDBC的连接，关闭IO流、保证unlock锁等。 3.finalize是Java lang包下基础类Object的一个方法，它是为了保证对象在被GC前完成特定资源的回收。在jdk9中已被deprecated，不推荐使用。 一点拓展​ final是被推荐使用的，它可以明确地表示我们代码的逻辑意图，明确告知别人某些行为是不可以更改的。在java.lang包下的很多类都被声明为final class，有效避免API使用者更改基础功能，保证平台安全。使用final修饰参数或变量，可以避免意外赋值导致的编程bug。并且final变量可以用于保护只读数据，在并发编程中，明确不能再赋值final变量，有利于减少额外的同步开销，省去一些防御性拷贝的必要。那么final是不是immutable（不可变）呢？其实不然。 12345final ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;(); list.add("single"); list.add("dog"); list.add("is pretty good"); System.out.println(list); final约束的是list这个引用不可以被赋值，但是这个对象的行为不受final影响，不论是添加还是删除元素都是可以的。 ​ finally相信每一个Java开发者都知道怎么使用。其实在jdk7的版本就推出了try-catch-resources，我们可以使用它来更好地处理异常，减少我们一些重复的关闭资源的动作。特别要注意的是，finally里的代码在有一种情况下不会执行： 123456try&#123; ... System.exit(1);&#125;finally&#123; ...&#125; ​ finalize业界不推荐使用，我们无法使用finalize保证特定资源的回收，finalize具体在什么时候执行，是否符合我们的需求这些都是无法预知的。使用不当会导致程序死锁等。finalize是被设计在对象被垃圾收集前调用，那么JVM需要对finalize方法的对象进行额外的处理，本质上是快速回收的障碍者，可能导致你的对象经过多个垃圾收集周期才被回收。finalize拖慢垃圾回收，导致大量对象堆积，进一步导致OOM错误。所以资源用完就显式释放，或利用资源池来尽量reuse。目前Java正在用Cleaner来代替finalize，笔者能力有限，这里不做多说，有兴趣的可以多了解。]]></content>
+      <categories>
+        <category>Java面试</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Java面试</tag>
+        <tag>Java基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[说说对于Java的理解]]></title>
     <url>%2F2018%2F05%2F10%2F%E8%AF%B4%E8%AF%B4%E5%AF%B9%E4%BA%8EJava%E7%9A%84%E7%90%86%E8%A7%A3%2F</url>
     <content type="text"><![CDATA[基本回答​ Java是一门面向对象的语言，它主要有两个重要的特性。一是优秀的跨平台能力，就如官方所说的”write once,run anywhere”（书写一次，到处运行），二是Java中的GC(Garbage Collection)机制,Java通过垃圾收集器（Garbage Collector）回收分配内存，一般情况下，程序员不需要自己关心内存的分配和回收。 ​ 同时，Java日常开发中最常用到的就是JDK和JRE。其中JRE即Java的运行环境，包含了JVM和Java的类库等，JDK包括了JRE，它相比JRE提供了更多的工具，如编译器，Jconsole… ​ Java的跨平台特性与Java虚拟机的存在密不可分，可在不同的环境中运行。比如说Windows平台和Linux平台都有相应的JDK，安装好JDK后也就有了Java语言的运行环境。其实Java语言本身与其他的编程语言没有特别大的差异，并不是说Java语言可以跨平台，而是在不同的平台都有可以让Java语言运行的环境而已，所以才有了Java一次编译，到处运行这样的效果。​ 严格的讲，跨平台的语言不止Java一种，但Java是较为成熟的一种。“一次编译，到处运行”这种效果跟编译器有关。编程语言的处理需要编译器和解释器。Java虚拟机和DOS类似，相当于一个供程序运行的平台。“到处运行”的关键和前提就是JVM。因为在第二次编译中JVM起着关键作用。在可以运行Java虚拟机的地方都内含着一个JVM操作系统。从而使JAVA提供了各种不同平台上的虚拟机制，因此实现了“到处运行”的效果。 一点拓展​ 日常开发中，我们的Java代码会通过Javac编译成字节码，运行时，通过JVM内嵌的解释器将字节码转换成为最后的机器码。 ​ 在我们大部分开发中用的JVM中，Oracle JDK 提供的 Hotspot JVM，都提供JIT（Just-In-Time）编译器，也就是通常所说的动态编译器，能将运行时的一部分热点代码翻译成机器码（编译执行），所以Java并不完全是解释执行的语言。 ​ Java在编译期生成.class文件，通过JVM和字节码屏蔽了操作系统和硬件的细节。在运行时通过class-loader加载字节码，解释或编译执行，在JDK1.8中就是解释和编译混合的模式（-Xmixed）。 ​ 下图是摘自极客时间@Java核心技术36讲 杨晓峰前Oracle首席工程师总结的Java平台相对宽泛的蓝图： 大家可以据此更深层次的了解Java这门古老的语言。]]></content>

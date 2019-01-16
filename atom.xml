@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hunterhdq.github.io/"/>
-  <updated>2019-01-15T15:21:15.129Z</updated>
+  <updated>2019-01-16T15:32:49.096Z</updated>
   <id>https://hunterhdq.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>final、finally、finalize有什么不同</title>
+    <link href="https://hunterhdq.github.io/2018/05/16/final%E3%80%81finally%E3%80%81finalize%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C/"/>
+    <id>https://hunterhdq.github.io/2018/05/16/final、finally、finalize有什么不同/</id>
+    <published>2018-05-16T14:25:41.000Z</published>
+    <updated>2019-01-16T15:32:49.096Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="基本回答"><a href="#基本回答" class="headerlink" title="基本回答"></a>基本回答</h3><p>1.final可以用来修饰类、方法和变量。final修饰的类不可以被继承，修饰的变量不可以被修改，修饰的方法不可以被重写(Overwrite)。</p><p>2.finally表示Java保证重点代码一定要执行的一种机制。通常开发中，我们使用try-finally或者try-catch-finally来执行一些特定的操作，比如关闭JDBC的连接，关闭IO流、保证unlock锁等。<a id="more"></a></p><p>3.finalize是Java lang包下基础类Object的一个方法，它是为了保证对象在被GC前完成特定资源的回收。在jdk9中已被deprecated，不推荐使用。</p><h3 id="一点拓展"><a href="#一点拓展" class="headerlink" title="一点拓展"></a>一点拓展</h3><p>​    final是被推荐使用的，它可以明确地表示我们代码的逻辑意图，明确告知别人某些行为是不可以更改的。在java.lang包下的很多类都被声明为final class，有效避免API使用者更改基础功能，保证平台安全。使用final修饰参数或变量，可以避免意外赋值导致的编程bug。并且final变量可以用于保护只读数据，在并发编程中，明确不能再赋值final变量，有利于减少额外的同步开销，省去一些防御性拷贝的必要。那么final是不是immutable（不可变）呢？其实不然。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> ArrayList&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">       list.add(<span class="string">"single"</span>);</span><br><span class="line">       list.add(<span class="string">"dog"</span>);</span><br><span class="line">       list.add(<span class="string">"is pretty good"</span>);</span><br><span class="line">       System.out.println(list);</span><br></pre></td></tr></table></figure><p>final约束的是list这个引用不可以被赋值，但是这个对象的行为不受final影响，不论是添加还是删除元素都是可以的。</p><p>​    finally相信每一个Java开发者都知道怎么使用。其实在jdk7的版本就推出了try-catch-resources，我们可以使用它来更好地处理异常，减少我们一些重复的关闭资源的动作。特别要注意的是，finally里的代码在有一种情况下不会执行：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    System.exit(<span class="number">1</span>);</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>​    finalize业界不推荐使用，我们无法使用finalize保证特定资源的回收，finalize具体在什么时候执行，是否符合我们的需求这些都是无法预知的。使用不当会导致程序死锁等。finalize是被设计在对象被垃圾收集前调用，那么JVM需要对finalize方法的对象进行额外的处理，本质上是快速回收的障碍者，可能导致你的对象经过多个垃圾收集周期才被回收。finalize拖慢垃圾回收，导致大量对象堆积，进一步导致OOM错误。所以资源用完就显式释放，或利用资源池来尽量reuse。目前Java正在用Cleaner来代替finalize，笔者能力有限，这里不做多说，有兴趣的可以多了解。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;基本回答&quot;&gt;&lt;a href=&quot;#基本回答&quot; class=&quot;headerlink&quot; title=&quot;基本回答&quot;&gt;&lt;/a&gt;基本回答&lt;/h3&gt;&lt;p&gt;1.final可以用来修饰类、方法和变量。final修饰的类不可以被继承，修饰的变量不可以被修改，修饰的方法不可以被重写(Overwrite)。&lt;/p&gt;
+&lt;p&gt;2.finally表示Java保证重点代码一定要执行的一种机制。通常开发中，我们使用try-finally或者try-catch-finally来执行一些特定的操作，比如关闭JDBC的连接，关闭IO流、保证unlock锁等。
+    
+    </summary>
+    
+      <category term="Java面试" scheme="https://hunterhdq.github.io/categories/Java%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
+    
+      <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
   
   <entry>
     <title>说说对于Java的理解</title>
