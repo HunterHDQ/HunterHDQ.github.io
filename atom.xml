@@ -42,6 +42,33 @@
   </entry>
   
   <entry>
+    <title>强引用、软引用、弱引用、幻象引用的区别</title>
+    <link href="https://hunterhdq.github.io/2018/06/01/%E5%BC%BA%E5%BC%95%E7%94%A8%E3%80%81%E8%BD%AF%E5%BC%95%E7%94%A8%E3%80%81%E5%BC%B1%E5%BC%95%E7%94%A8%E3%80%81%E5%B9%BB%E8%B1%A1%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>https://hunterhdq.github.io/2018/06/01/强引用、软引用、弱引用、幻象引用的区别/</id>
+    <published>2018-06-01T11:30:17.000Z</published>
+    <updated>2019-01-21T12:43:47.034Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="基本回答"><a href="#基本回答" class="headerlink" title="基本回答"></a>基本回答</h3><p>Java中，除了基本数据类型的变量，其它所有的都是引用数据类型。不同的引用类型主要体现的是<strong>对象不同的可达性（reachable）状态和对垃圾收集的影响 </strong>。</p><p>强引用（Strong Reference）,就是普通对象的引用，只要还有强引用指向一个对象，就表明这个对象还活着，那么GC就不会去触碰。对于普通对象，如果没有了其它的引用关系，只要超过了引用的作用域或显式的将强引用赋值为null，那么就是可以被GC的，回收的时机取决于垃圾回收策略。<a id="more"></a></p><p>软引用（Soft Reference），相对强引用弱化的引用。它会让垃圾收集不去触碰这些引用的对象，只有当JVM认为内存不足时，才会试图回收这些软引用所指向的对象。JVM会确保在抛出OOM错误之前，清理软引用的对象。因此，软引用通常用来实现内存敏感的缓存，如果还有内存空间，就暂时保留缓存，内存不足时就清理，保证使用缓存的同时不会耗尽内存。</p><p>弱引用（Weak Reference），并不能使对象豁免垃圾回收进行收集，仅仅是提供一种访问在弱引用状态下对象的途径。这就可以构建一种没有特定约束的关系。当试图获取时对象还在，那么就使用，否则重新实例化，这种方式同样是很多缓存实现的选择。但是垃圾回收的时候会进行二次确认是否保持弱引用的情况。保持这个状态才会进行清理。</p><p>幻想引用（虚引用），你不能通过它来访问对象。幻想引用仅仅是提供一种确保对象在被finalize之后，做某些事情的机制。比如，Post-Mortem清理机制，Java平台自身的Cleaner机制等，也有人利用幻想引用监控对象的创建和销毁。</p><h3 id="一点拓展"><a href="#一点拓展" class="headerlink" title="一点拓展"></a>一点拓展</h3><p>Java平台定义的不同可达性级别（reachability level）：</p><p>1.强可达(Strongly Reachable):当一个对象可以有一个或多个线程可以不通过各种引用访问到的情况。比如，我们新建一个对象，那么创建它的线程对它就是强可达。</p><p>2.软可达（Softly Reachable）:当我们只能通过软引用才能访问到对象的状态。</p><p>3.弱引用（Weakly Reachable）：无法通过强引用或软引用访问，只能通过弱引用访问到的状态。十分接近finalize状态的时机，当弱引用被清除时，就符合finalize的条件。</p><p>4.幻像可达（Phantom Reachable）：没有强引用，软引用，弱引用关联，并且finalize过了，只有幻象引用指向这个对象的时候。</p><p>5.不可达（unreachable）：对象可以被清除。</p><p>说的通俗一点：</p><p>强引用就像大老婆，关系很稳固。<br>软引用就像二老婆，随时有失宠的可能，但也有扶正的可能。<br>弱引用就像情人，关系不稳定，可能跟别人跑了。<br>幻像引用就是梦中情人，只在梦里出现过。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;基本回答&quot;&gt;&lt;a href=&quot;#基本回答&quot; class=&quot;headerlink&quot; title=&quot;基本回答&quot;&gt;&lt;/a&gt;基本回答&lt;/h3&gt;&lt;p&gt;Java中，除了基本数据类型的变量，其它所有的都是引用数据类型。不同的引用类型主要体现的是&lt;strong&gt;对象不同的可达性（reachable）状态和对垃圾收集的影响 &lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;强引用（Strong Reference）,就是普通对象的引用，只要还有强引用指向一个对象，就表明这个对象还活着，那么GC就不会去触碰。对于普通对象，如果没有了其它的引用关系，只要超过了引用的作用域或显式的将强引用赋值为null，那么就是可以被GC的，回收的时机取决于垃圾回收策略。
+    
+    </summary>
+    
+      <category term="Java面试" scheme="https://hunterhdq.github.io/categories/Java%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
+    
+      <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>String、StringBuffer、StringBuilder的区别</title>
     <link href="https://hunterhdq.github.io/2018/05/31/String%E3%80%81StringBuffer%E3%80%81StringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
     <id>https://hunterhdq.github.io/2018/05/31/String、StringBuffer、StringBuilder的区别/</id>
