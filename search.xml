@@ -27,6 +27,32 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[经典排序算法之冒泡排序]]></title>
+    <url>%2F2018%2F10%2F13%2F%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B9%8B%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[经典排序算法之冒泡排序基本思想冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。 算法描述依次比较相邻的两个数，将小数放在前面，大数放在后面。即在第一趟：首先比较第1个和第2个数，将小数放前，大数放后。然后比较第2个数和第3个数，将小数放前，大数放后，如此继续，直至比较最后两个数，将小数放前，大数放后。重复第一趟步骤，直至全部排序完成。 第一趟比较完成后，最后一个数一定是数组中最大的一个数，所以第二趟比较的时候最后一个数不参与比较； 第二趟比较完成后，倒数第二个数也一定是数组中第二大的数，所以第三趟比较的时候最后两个数不参与比较； 依次类推，每一趟比较次数-1； …… 代码实现1234567891011121314151617181920212223package com.hunter.sort;import java.util.Arrays;/** * Author:Hunter * Date:2018/10/13 */public class BubbleSort &#123; public static void main(String[] args) &#123; int[] a = &#123;5, 1, -9, 25, 88, 66, 101, 101&#125;; for (int i = 0; i &lt; a.length - 1; i++) &#123; for (int j = 0; j &lt; a.length - 1 - i; j++) &#123; if (a[j] &gt; a[j + 1]) &#123; int temp = a[j]; a[j] = a[j + 1]; a[j + 1] = temp; &#125; &#125; &#125; System.out.println(Arrays.toString(a)); &#125;&#125;]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>算法</tag>
+        <tag>排序</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[经典排序算法之快速排序]]></title>
+    <url>%2F2018%2F10%2F12%2F%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B9%8B%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%2F</url>
+    <content type="text"><![CDATA[经典排序算法之快速排序基本思想通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。 算法描述选择一个关键值作为基准值。比基准值小的都在左边序列（一般是无序的），比基准值大的都在右边（一般是无序的）。一般选择序列的第一个元素。 一次循环：从后往前比较，用基准值和最后一个值比较，如果比基准值小的交换位置，如果没有继续比较下一个，直到找到第一个比基准值小的值才交换。找到这个值之后，又从前往后开始比较，如果有比基准值大的，交换位置，如果没有继续比较下一个，直到找到第一个比基准值大的值才交换。直到从前往后的比较索引&gt;从后往前比较的索引，结束第一次循环，此时，对于基准值来说，左右两边就是有序的了。接着分别比较左右两边的序列，重复上述的循环。 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041424344454647package com.hunter.sort;import java.util.Arrays;/** * Author:Hunter * Date:2018/10/12 */public class FastSort &#123; public static void main(String[] args) &#123; int[] array = &#123;12, 20, 5, 16, 15, 1, 30, 45, 23, 9&#125;; int start = 0; int end = array.length - 1; quickSort(array, start, end); System.out.println(Arrays.toString(array)); &#125; public static void quickSort(int[] arr, int low, int high) &#123; int start = low; int end = high; int key = arr[low]; while (end &gt; start) &#123; while (end &gt; start &amp;&amp; arr[end] &gt;= key) &#123; end--; &#125; if (arr[end] &lt;= key) &#123; int temp = arr[end]; arr[end] = arr[start]; arr[start] = temp; &#125; while (end &gt; start &amp;&amp; arr[start] &lt;= key) &#123; start++; &#125; if (arr[start] &gt;= key) &#123; int temp = arr[end]; arr[end] = arr[start]; arr[start] = temp; &#125; &#125; if (start &gt; low) &#123; quickSort(arr, low, start - 1); &#125; if (end &lt; high) &#123; quickSort(arr, end + 1, high); &#125; &#125;&#125;]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>算法</tag>
+        <tag>排序</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[强引用、软引用、弱引用、幻象引用的区别]]></title>
     <url>%2F2018%2F06%2F01%2F%E5%BC%BA%E5%BC%95%E7%94%A8%E3%80%81%E8%BD%AF%E5%BC%95%E7%94%A8%E3%80%81%E5%BC%B1%E5%BC%95%E7%94%A8%E3%80%81%E5%B9%BB%E8%B1%A1%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB%2F</url>
     <content type="text"><![CDATA[基本回答Java中，除了基本数据类型的变量，其它所有的都是引用数据类型。不同的引用类型主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响 。 强引用（Strong Reference）,就是普通对象的引用，只要还有强引用指向一个对象，就表明这个对象还活着，那么GC就不会去触碰。对于普通对象，如果没有了其它的引用关系，只要超过了引用的作用域或显式的将强引用赋值为null，那么就是可以被GC的，回收的时机取决于垃圾回收策略。 软引用（Soft Reference），相对强引用弱化的引用。它会让垃圾收集不去触碰这些引用的对象，只有当JVM认为内存不足时，才会试图回收这些软引用所指向的对象。JVM会确保在抛出OOM错误之前，清理软引用的对象。因此，软引用通常用来实现内存敏感的缓存，如果还有内存空间，就暂时保留缓存，内存不足时就清理，保证使用缓存的同时不会耗尽内存。 弱引用（Weak Reference），并不能使对象豁免垃圾回收进行收集，仅仅是提供一种访问在弱引用状态下对象的途径。这就可以构建一种没有特定约束的关系。当试图获取时对象还在，那么就使用，否则重新实例化，这种方式同样是很多缓存实现的选择。但是垃圾回收的时候会进行二次确认是否保持弱引用的情况。保持这个状态才会进行清理。 幻想引用（虚引用），你不能通过它来访问对象。幻想引用仅仅是提供一种确保对象在被finalize之后，做某些事情的机制。比如，Post-Mortem清理机制，Java平台自身的Cleaner机制等，也有人利用幻想引用监控对象的创建和销毁。 一点拓展Java平台定义的不同可达性级别（reachability level）： 1.强可达(Strongly Reachable):当一个对象可以有一个或多个线程可以不通过各种引用访问到的情况。比如，我们新建一个对象，那么创建它的线程对它就是强可达。 2.软可达（Softly Reachable）:当我们只能通过软引用才能访问到对象的状态。 3.弱引用（Weakly Reachable）：无法通过强引用或软引用访问，只能通过弱引用访问到的状态。十分接近finalize状态的时机，当弱引用被清除时，就符合finalize的条件。 4.幻像可达（Phantom Reachable）：没有强引用，软引用，弱引用关联，并且finalize过了，只有幻象引用指向这个对象的时候。 5.不可达（unreachable）：对象可以被清除。 说的通俗一点： 强引用就像大老婆，关系很稳固。软引用就像二老婆，随时有失宠的可能，但也有扶正的可能。弱引用就像情人，关系不稳定，可能跟别人跑了。幻像引用就是梦中情人，只在梦里出现过。]]></content>
@@ -35,8 +61,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Java基础</tag>
         <tag>Java面试</tag>
+        <tag>Java基础</tag>
       </tags>
   </entry>
   <entry>
@@ -48,8 +74,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Java基础</tag>
         <tag>Java面试</tag>
+        <tag>Java基础</tag>
       </tags>
   </entry>
   <entry>
@@ -61,8 +87,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Java基础</tag>
         <tag>Java面试</tag>
+        <tag>Java基础</tag>
       </tags>
   </entry>
   <entry>
@@ -74,8 +100,8 @@
       </categories>
       <tags>
         <tag>Java</tag>
-        <tag>Java基础</tag>
         <tag>Java面试</tag>
+        <tag>Java基础</tag>
       </tags>
   </entry>
 </search>

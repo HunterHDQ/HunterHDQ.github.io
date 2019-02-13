@@ -70,6 +70,58 @@
   </entry>
   
   <entry>
+    <title>经典排序算法之冒泡排序</title>
+    <link href="https://hunterhdq.github.io/2018/10/13/%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B9%8B%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/"/>
+    <id>https://hunterhdq.github.io/2018/10/13/经典排序算法之冒泡排序/</id>
+    <published>2018-10-13T14:02:05.000Z</published>
+    <updated>2019-02-13T14:07:56.433Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="经典排序算法之冒泡排序"><a href="#经典排序算法之冒泡排序" class="headerlink" title="经典排序算法之冒泡排序"></a>经典排序算法之冒泡排序</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。<a id="more"></a> </p><h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><p>依次比较相邻的两个数，将小数放在前面，大数放在后面。即在第一趟：首先比较第1个和第2个数，将小数放前，大数放后。然后比较第2个数和第3个数，将小数放前，大数放后，如此继续，直至比较最后两个数，将小数放前，大数放后。重复第一趟步骤，直至全部排序完成。</p><p>第一趟比较完成后，最后一个数一定是数组中最大的一个数，所以第二趟比较的时候最后一个数不参与比较；</p><p>第二趟比较完成后，倒数第二个数也一定是数组中第二大的数，所以第三趟比较的时候最后两个数不参与比较；</p><p>依次类推，每一趟比较次数-1；</p><p>……</p><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hunter.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Author:Hunter</span></span><br><span class="line"><span class="comment"> * Date:2018/10/13</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BubbleSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] a = &#123;<span class="number">5</span>, <span class="number">1</span>, -<span class="number">9</span>, <span class="number">25</span>, <span class="number">88</span>, <span class="number">66</span>, <span class="number">101</span>, <span class="number">101</span>&#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; a.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; a.length - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (a[j] &gt; a[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">int</span> temp = a[j];</span><br><span class="line">                    a[j] = a[j + <span class="number">1</span>];</span><br><span class="line">                    a[j + <span class="number">1</span>] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Arrays.toString(a));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;经典排序算法之冒泡排序&quot;&gt;&lt;a href=&quot;#经典排序算法之冒泡排序&quot; class=&quot;headerlink&quot; title=&quot;经典排序算法之冒泡排序&quot;&gt;&lt;/a&gt;经典排序算法之冒泡排序&lt;/h3&gt;&lt;h4 id=&quot;基本思想&quot;&gt;&lt;a href=&quot;#基本思想&quot; class=&quot;headerlink&quot; title=&quot;基本思想&quot;&gt;&lt;/a&gt;基本思想&lt;/h4&gt;&lt;p&gt;冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。
+    
+    </summary>
+    
+      <category term="算法" scheme="https://hunterhdq.github.io/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
+    
+      <category term="算法" scheme="https://hunterhdq.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="排序" scheme="https://hunterhdq.github.io/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>经典排序算法之快速排序</title>
+    <link href="https://hunterhdq.github.io/2018/10/12/%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B9%8B%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/"/>
+    <id>https://hunterhdq.github.io/2018/10/12/经典排序算法之快速排序/</id>
+    <published>2018-10-12T04:08:09.000Z</published>
+    <updated>2019-02-13T14:10:39.102Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="经典排序算法之快速排序"><a href="#经典排序算法之快速排序" class="headerlink" title="经典排序算法之快速排序"></a>经典排序算法之快速排序</h3><h4 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h4><p>通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。 <a id="more"></a></p><h4 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h4><p>选择一个关键值作为基准值。比基准值小的都在左边序列（一般是无序的），比基准值大的都在右边（一般是无序的）。一般选择序列的第一个元素。</p><p>一次循环：从后往前比较，用基准值和最后一个值比较，如果比基准值小的交换位置，如果没有继续比较下一个，直到找到第一个比基准值小的值才交换。找到这个值之后，又从前往后开始比较，如果有比基准值大的，交换位置，如果没有继续比较下一个，直到找到第一个比基准值大的值才交换。直到从前往后的比较索引&gt;从后往前比较的索引，结束第一次循环，此时，对于基准值来说，左右两边就是有序的了。接着分别比较左右两边的序列，重复上述的循环。</p><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hunter.sort;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Author:Hunter</span></span><br><span class="line"><span class="comment"> * Date:2018/10/12</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FastSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] array = &#123;<span class="number">12</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">1</span>, <span class="number">30</span>, <span class="number">45</span>, <span class="number">23</span>, <span class="number">9</span>&#125;;</span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> end = array.length - <span class="number">1</span>;</span><br><span class="line">        quickSort(array, start, end);</span><br><span class="line">        System.out.println(Arrays.toString(array));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">quickSort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> start = low;</span><br><span class="line">        <span class="keyword">int</span> end = high;</span><br><span class="line">        <span class="keyword">int</span> key = arr[low];</span><br><span class="line">        <span class="keyword">while</span> (end &gt; start) &#123;</span><br><span class="line">            <span class="keyword">while</span> (end &gt; start &amp;&amp; arr[end] &gt;= key) &#123;</span><br><span class="line">                end--;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (arr[end] &lt;= key) &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = arr[end];</span><br><span class="line">                arr[end] = arr[start];</span><br><span class="line">                arr[start] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span> (end &gt; start &amp;&amp; arr[start] &lt;= key) &#123;</span><br><span class="line">                start++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (arr[start] &gt;= key) &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = arr[end];</span><br><span class="line">                arr[end] = arr[start];</span><br><span class="line">                arr[start] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (start &gt; low) &#123;</span><br><span class="line">            quickSort(arr, low, start - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (end &lt; high) &#123;</span><br><span class="line">            quickSort(arr, end + <span class="number">1</span>, high);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;经典排序算法之快速排序&quot;&gt;&lt;a href=&quot;#经典排序算法之快速排序&quot; class=&quot;headerlink&quot; title=&quot;经典排序算法之快速排序&quot;&gt;&lt;/a&gt;经典排序算法之快速排序&lt;/h3&gt;&lt;h4 id=&quot;基本思想&quot;&gt;&lt;a href=&quot;#基本思想&quot; class=&quot;headerlink&quot; title=&quot;基本思想&quot;&gt;&lt;/a&gt;基本思想&lt;/h4&gt;&lt;p&gt;通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。
+    
+    </summary>
+    
+      <category term="算法" scheme="https://hunterhdq.github.io/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
+    
+      <category term="算法" scheme="https://hunterhdq.github.io/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="排序" scheme="https://hunterhdq.github.io/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>强引用、软引用、弱引用、幻象引用的区别</title>
     <link href="https://hunterhdq.github.io/2018/06/01/%E5%BC%BA%E5%BC%95%E7%94%A8%E3%80%81%E8%BD%AF%E5%BC%95%E7%94%A8%E3%80%81%E5%BC%B1%E5%BC%95%E7%94%A8%E3%80%81%E5%B9%BB%E8%B1%A1%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
     <id>https://hunterhdq.github.io/2018/06/01/强引用、软引用、弱引用、幻象引用的区别/</id>
@@ -90,9 +142,9 @@
     
       <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
     
-      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
@@ -117,9 +169,9 @@
     
       <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
     
-      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
@@ -144,9 +196,9 @@
     
       <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
     
-      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
@@ -171,9 +223,9 @@
     
       <category term="Java" scheme="https://hunterhdq.github.io/tags/Java/"/>
     
-      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
-    
       <category term="Java面试" scheme="https://hunterhdq.github.io/tags/Java%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="Java基础" scheme="https://hunterhdq.github.io/tags/Java%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
