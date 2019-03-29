@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "58c808e0"
+    });
+  daovoice('update');
+  </script>
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,Spring Microservices,微服务,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Hunter的博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Abstractwhen it comes to building resilient systems, most software engineers only take into account the complete failure of a piece of infrastructure or a key service. They focus on building redundanc">
+<meta name="keywords" content="Spring,Spring Microservices,微服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Client Resiliency patterns with Spring Cloud and Netflix Hystrix">
+<meta property="og:url" content="https://hunterhdq.github.io/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/index.html">
+<meta property="og:site_name" content="Hunter的博客">
+<meta property="og:description" content="Abstractwhen it comes to building resilient systems, most software engineers only take into account the complete failure of a piece of infrastructure or a key service. They focus on building redundanc">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://hunterhdq.github.io/images/springmicroservices/springbanner01.jpg">
+<meta property="og:updated_time" content="2019-03-29T14:53:54.739Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Client Resiliency patterns with Spring Cloud and Netflix Hystrix">
+<meta name="twitter:description" content="Abstractwhen it comes to building resilient systems, most software engineers only take into account the complete failure of a piece of infrastructure or a key service. They focus on building redundanc">
+<meta name="twitter:image" content="https://hunterhdq.github.io/images/springmicroservices/springbanner01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://hunterhdq.github.io/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/">
+
+
+
+
+
+  <title>Client Resiliency patterns with Spring Cloud and Netflix Hystrix | Hunter的博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?feb219cbcebb9c7f3c1ea78041f468f3";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/HunterHDQ" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style></a>	
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hunter的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Technology-driven life</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://hunterhdq.github.io/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Hunter">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hunter的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Client Resiliency patterns with Spring Cloud and Netflix Hystrix</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-29T22:46:44+08:00">
+                2019-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Microservices/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Microservices</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/" class="leancloud_visitors" data-flag-title="Client Resiliency patterns with Spring Cloud and Netflix Hystrix">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+				 <span>℃</span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  40
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope="" itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="/images/springmicroservices/springbanner01.jpg" rel="gallery_cjtu6tkkz002ahkl1txnx2vdz" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/images/springmicroservices/springbanner01.jpg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><p>when it comes to building resilient systems, most software engineers only take into account the complete failure of a piece of infrastructure or a key service. They focus on building redundancy into each layer of their application using techniques such as clustering key servers, load balancing between services, and segregation of infrastructure into multiple locations.<a id="more"></a></p>
+<p>While these approaches take into account the complete (and often spectacular)<br>loss of a system component, they address only one small part of building resilient systems. When a service crashes, it’s easy to detect that it’s no longer there, and the application can route around it. However, when a service is running slow, detecting that poor performance and routing around it is extremely difficult because:</p>
+<ol>
+<li>Degradation of a service can start out as intermittent and build momentum—The degradation might occur only in small bursts. The first signs of failure might be a small group of users complaining about a problem, until suddenly the application container exhausts its thread pool and collapses completely.</li>
+<li>Calls to remote services are usually synchronous and don’t cut short a long-running call—The caller of a service has no concept of a timeout to keep the service call from hanging out forever. The application developer calls the service to perform an action and waits for the service to return.</li>
+<li>Applications are often designed to deal with complete failures of remote resources, not partial degradations. Often, as long as the service has not completely failed, an application will continue to call the service and won’t fail fast. The application will continue to call the poorly behaving service. The calling application or service may degrade gracefully or, more likely, crash because of resource exhaustion. Resource exhaustion is when a limited resource such as a thread pool or database connection maxes out and the calling client must wait for that resource to become available.</li>
+</ol>
+<p>What’s insidious about problems caused by poorly performing remote services is that they’re not only difficult to detect, but can trigger a cascading effect that can ripple throughout an entire application ecosystem. Without safeguards in place, a single poorly performing service can quickly take down multiple applications. Cloud-based,microservice-based applications are particularly vulnerable to these types of outages because these applications are composed of a large number of fine-grained, distributed services with different pieces of infrastructure involved in completing a user’s transaction.</p>
+<h3 id="What-are-client-side-resiliency-patterns"><a href="#What-are-client-side-resiliency-patterns" class="headerlink" title="What are client-side resiliency patterns"></a>What are client-side resiliency patterns</h3><p>Client resiliency software patterns are focused on protecting a remote resource’s<br>(another microservice call or database lookup) client from crashing when the remote resource is failing because that remote service is throwing errors or performing poorly. The goal of these patterns is to allow the client to “fail fast,” not consume valuable resources such as database connections and thread pools, and prevent the problem of the remote service from spreading “upstream” to consumers of the client.<br>There are four client resiliency patterns:</p>
+<ol>
+<li>Client-side load balancing</li>
+<li>Circuit breakers</li>
+<li>Fallbacks</li>
+<li>Bulkheads</li>
+</ol>
+<p><img src="/images/springmicroservices/springmicroC5P1.png" alt="springmicroC5P1">These patterns are implemented in the client calling the remote resource. The<br>implementation of these patterns logically sit <strong>between the client consuming the remote resources and the resource itself.</strong></p>
+<h4 id="Client-side-load-balancing"><a href="#Client-side-load-balancing" class="headerlink" title="Client-side load balancing"></a>Client-side load balancing</h4><p>Client-side load balancing involves having the client look up all of a service’s individual instances from a service discovery agent (like Netflix Eureka) and then caching the physical location of said service instances.</p>
+<p>Whenever a service consumer needs to call that service instance, the client-side load balancer will return a location from the pool of service locations it’s maintaining.</p>
+<p>Because the client-side load balancer sits between the service client and the service consumer, the load balancer can detect if a service instance is throwing errors or behaving poorly. If the client-side load balancer detects a problem, it can remove that service instance from the pool of available service locations and prevent any future service calls from hitting that service instance.</p>
+<p>This is exactly the behavior that Netflix’s Ribbon libraries provide out of the box<br>with no extra configuration. </p>
+<h4 id="Circuit-breaker"><a href="#Circuit-breaker" class="headerlink" title="Circuit breaker"></a>Circuit breaker</h4><p>The circuit breaker pattern is a client resiliency pattern that’s modeled after an electrical circuit breaker. In an electrical system, a circuit breaker will detect if too much current is flowing through the wire. If the circuit breaker detects a problem, it will break the connection with the rest of the electrical system and keep the downstream components from the being fried.</p>
+<p>With a software circuit breaker, when a remote service is called, the circuit breaker will monitor the call. If the calls take too long, the circuit breaker will intercede and kill the call. In addition, the circuit breaker will monitor all calls to a remote resource and if enough calls fail, the circuit break implementation will pop, failing fast and preventing future calls to the failing remote resource.</p>
+<h4 id="Fallback-processing"><a href="#Fallback-processing" class="headerlink" title="Fallback processing"></a>Fallback processing</h4><p>With the fallback pattern, when a remote service call fails, rather than generating an exception, the service consumer will execute an alternative code path and try to carry out an action through another means. This usually involves looking for data from another data source or queueing the user’s request for future processing. The user’s call will not be shown an exception indicating a problem, but they may be notified that their request will have to be fulfilled at a later date.</p>
+<p>For instance, suppose you have an e-commerce site that monitors your user’s<br>behavior and tries to give them recommendations of other items they could buy. Typically, you might call a microservice to run an analysis of the user’s past behavior and return a list of recommendations tailored to that specific user. However, if the preference service fails, your fallback might be to retrieve a more general list of preferences that’s based off all user purchases and is much more generalized. This data might come from a completely different service and data source.</p>
+<h4 id="Bulkheads"><a href="#Bulkheads" class="headerlink" title="Bulkheads"></a>Bulkheads</h4><p>The bulkhead pattern is based on a concept from building ships. With a bulkhead<br>design, a ship is divided into completely segregated and watertight compartments called bulkheads. Even if the ship’s hull is punctured, because the ship is divided into watertight compartments (bulkheads), the bulkhead will keep the water confined to the area of the ship where the puncture occurred and prevent the entire ship from filling with water and sinking.</p>
+<p>The same concept can be applied to a service that must interact with multiple<br>remote resources. By using the bulkhead pattern, you can break the calls to remote resources into their own thread pools and reduce the risk that a problem with one slow remote resource call will take down the entire application. The thread pools act as the bulkheads for your service. Each remote resource is segregated and assigned to the thread pool. If one service is responding slowly, the thread pool for that one type of service call will become saturated and stop processing requests. Service calls to other services won’t become saturated because they’re assigned to other thread pools.</p>
+<h4 id="Why-client-resiliency-matters"><a href="#Why-client-resiliency-matters" class="headerlink" title="Why client resiliency matters"></a>Why client resiliency matters</h4><p>In figure 5.2, I show a typical scenario involving the use of remote resource like a<br>database and remote service.</p>
+<p>In the scenario in figure 5.2, three applications are communicating in one fashion<br>or another with three different services. Applications A and B communicate directly with Service A. Service A retrieves data from a database and calls Service B to do work for it. Service B retrieves data from a completely different database platform and calls out to another service, Service C, from a third-party cloud provider whose service relies heavily on an internal Network Area Storage  (NAS) device to write data to a shared file system. In addition, Application C directly calls Service C.</p>
+<p>Over the weekend, a network administrator made what they thought was a small<br>tweak to the configuration on the  NAS , as shown in bold in figure 5.2. This change appears to work fine, but on Monday morning, any reads to a particular disk subsystem start performing extremely slowly.</p>
+<p>The developer who wrote Service B never anticipated slowdowns occurring with<br>calls to Service C. They wrote their code so that the writes to their database and the reads from the service occur within the same transaction. When Service C starts running slowly, not only does the thread pool for requests to Service C start backing up,the number of database connections in the service container’s connection pools become exhausted because these connections are being held open because the calls out to Service C never complete.</p>
+<p>Finally, Service A starts running out of resources because it’s calling Service B,<br>which is running slow because of Service C. Eventually, all three applications stop<br>responding because they run out of resources while waiting for requests to complete.</p>
+<p><img src="/images/springmicroservices/springmicroC5P2.png" alt="springmicroC5P2">This whole scenario could be avoided if a circuit-breaker pattern had been imple-<br>mented at each point where a distributed resource had been called (either a call to the database or a call to the service). In figure 5.2, if the call to Service C had been implemented with a circuit breaker, then when service C started performing poorly,the circuit breaker for that specific call to Service C would have been tripped and failed fast without eating up a thread. If Service B had multiple endpoints, only the endpoints that interacted with that specific call to Service C would be impacted. The rest of Service B’s functionality would still be intact and could fulfill user requests.</p>
+<p>A circuit breaker acts as a middle man between the application and the remote service. In the previous scenario, a circuit breaker implementation could have protected Applications A, B, and C from completely crashing.</p>
+<p>In figure 5.3, the Service B (the client) is never going to directly invoke Service C.<br>Instead, when the call is made, Service B is going to delegate the actual invocation of the service to the circuit breaker, which will take the call and wrap it in a thread (usually managed by a thread pool) that’s independent of the originating caller. By wrapping the call in a thread, the client is no longer directly waiting for the call to complete. Instead, the circuit breaker is monitoring the thread and can kill the call if the thread runs too long.</p>
+<p>Three scenarios are shown in figure 5.3. In the first scenario, the happy path, the<br>circuit breaker will maintain a timer and if the call to the remote service completes before the timer runs out, everything is good and Service B can continue its work. In the partial degradation scenario, Service B will call Service C through the circuit breaker. This time, though, Service C is running slow and the circuit breaker will kill the connection out to the remote service if it doesn’t complete before the timer on the thread maintained by the circuit breaker times out.<img src="/images/springmicroservices/springmicroC5P3.png" alt="springmicroC5P3"></p>
+<p>Service B will then get an error from making the call, but Service B won’t have<br>resources (that is, its own thread or connection pools) tied up waiting for Service C to complete. If the call to Service C is timed-out by the circuit breaker, the circuit breaker will start tracking the number of failures that have occurred.</p>
+<p>If enough errors on the service have occurred within a certain time period, the circuit breaker will now “trip” the circuit and all calls to Service C will fail without calling Service C.<br>This tripping of the circuit allows three things to occur:</p>
+<ol>
+<li>Service B now immediately knows there’s a problem without having to wait for a timeout from the circuit breaker.</li>
+<li>Service B can now choose to either completely fail or take action using an alter-native set of code (a fallback).</li>
+<li>Service C will be given an opportunity to recover because Service B isn’t calling it while the circuit breaker has been tripped. This allows Service C to have breathing room and helps prevent the cascading death that occurs when a service degradation occurs.</li>
+</ol>
+<p>Finally, the circuit breaker will occasionally let calls through to a degraded service,and if those calls succeed enough times in a row, the circuit breaker will reset itself.<br>The key thing a circuit break patterns offers is the ability for remote calls to</p>
+<ol>
+<li>Fail fast—When a remote service is experiencing a degradation, the application will fail fast and prevent resource exhaustion issues that normally shut down the entire application. In most outage situations, it’s better to be partially down rather than completely down.</li>
+<li>Fail gracefully—By timing out and failing fast, the circuit breaker pattern gives the application developer the ability to fail gracefully or seek alternative mechanisms to carry out the user’s intent. For instance, if a user is trying to retrieve data from one data source, and that data source is experiencing a service degradation, then the application developer could try to retrieve that data from another location.</li>
+<li>Recover seamlessly—With the circuit-breaker pattern acting as an intermediary,the circuit breaker can periodically check to see if the resource being requested is back on line and re-enable access to it without human intervention.</li>
+</ol>
+<p>In a large cloud-based application with hundreds of services, this graceful recovery iscritical because it can significantly cut down on the amount of time needed to restore service and significantly lessen the risk of a tired operator or application engineer causing greater problems by having them intervene directly (restarting a failed service) in the restoration of the service.</p>
+<h3 id="Setting-up-the-licensing-server-to-use-Spring-Cloud-and-Hystrix"><a href="#Setting-up-the-licensing-server-to-use-Spring-Cloud-and-Hystrix" class="headerlink" title="Setting up the licensing server to use Spring Cloud and Hystrix"></a>Setting up the licensing server to use Spring Cloud and Hystrix</h3><p>To begin our exploration of Hystrix, you need to set up your project  pom.xml to import the Spring Hystrix dependencies. You’ll take your licensing service that we’ve been building and modify its  pom.xml by adding the maven dependencies for Hystrix:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-cloud-starter-hystrix&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;com.netflix.hystrix&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;hystrix-javanica&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.5.9&lt;/version&gt;</span><br><span class="line"> &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>The first  <dependency> tag (spring-cloud-starter-hystrix) tells Maven to pull down the Spring Cloud Hystrix dependencies. This second  <dependency> tag (hystrix-javanica) will pull down the core Netflix Hystrix libraries.</dependency></dependency></p>
+<p><strong>NOTE</strong> You don’t have to include the  hystrix-javanica dependencies directly in the pom.xml . By default, the spring-cloud-starter-hystrix includes a version of the hystrix-javanica dependencies. The Camden.SR5 release of the book used  hystrix-javanica-1.5.6 . The version of hystrix-javanica had an inconsistency introduced into it that caused the Hystrix code without a fallback to throw a  java.lang.reflect.UndeclaredThrowableException instead  of  a  com.netflix.<br>hystrix.exception.HystrixRuntimeException . This was a breaking change for many developers who used older versions of Hystrix. The hystrix-javanica libraries fixed this in later releases, so I’ve purposely used a later version of  hystrix-javanica instead of using the default version pulled in by Spring Cloud.</p>
+<p>The last thing that needs to be done before you can begin using Hystrix circuit breakers within your application code is to annotate your service’s bootstrap class with the @EnableCircuitBreaker annotation. For example, for the licensing service, you’d add the @EnableCircuitBreaker annotation to the  licensing-service/src/main/java/com/thoughtmechanix/licenses/Application.java class.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableEurekaClient</span></span><br><span class="line"><span class="comment">//Tells Spring Cloud you’re going to use Hystrix for your service</span></span><br><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</span><br><span class="line">    <span class="meta">@LoadBalanced</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(Application.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE</strong> If you forget to add the @EnableCircuitBreaker annotation to your<br>bootstrap class, none of your Hystrix circuit breakers will be active. You won’t<br>get any warning or error messages when the service starts up.</p>
+<h3 id="Implementing-a-circuit-breaker-using-Hystrix"><a href="#Implementing-a-circuit-breaker-using-Hystrix" class="headerlink" title="Implementing a circuit breaker using Hystrix"></a>Implementing a circuit breaker using Hystrix</h3><p>We’re going to look at implementing Hystrix in two broad categories. In the first category, you’re going to wrap all calls to your database in the licensing and organization service with a Hystrix circuit breaker. You’re then going to wrap the inter-service calls between the licensing service and the organization service using Hystrix. While these are two different categories calls, you’ll see that the use of Hystrix will be exactly the same.</p>
+<p><img src="/images/springmicroservices/springmicroC5P4.png" alt="springmicroC5P4"></p>
+<p>Let’s start our Hystrix discussion by showing how to wrap the retrieval of licensing-service data from the licensing database using a synchronous Hystrix circuit breaker.With a synchronous call, the licensing service will retrieve its data but will wait for the SQL statement to complete or for a circuit-breaker time-out before continuing processing.</p>
+<p>Hystrix and Spring Cloud use the @HystrixCommand annotation to mark Java<br>class methods as being managed by a Hystrix circuit breaker. When the Spring framework sees the  @HystrixCommand , it will dynamically generate a proxy that will wrapper the method and manage all calls to that method through a thread pool of threads specifically set aside to handle remote calls.</p>
+<p>You’re going to wrap the  getLicensesByOrg() method in your  licensing-service/src/main/java/com/thoughtmechanix/licenses/services/LicenseService.java class, as shown in the following listing.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @HystrixCommand annotation is used to wrapper the getLicenseByOrg() method with a Hystrix circuit breaker.</span></span><br><span class="line"> <span class="meta">@HystrixCommand</span></span><br><span class="line"> <span class="function"><span class="keyword">private</span> Organization <span class="title">getOrganization</span><span class="params">(String organizationId)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">return</span> organizationRestClient.getOrganization(organizationId);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>This doesn’t look like a lot of code, and it’s not, but there is a lot of functionality<br>inside this one annotation. With the use of the  @HystrixCommand annotation, any time the  getLicensesByOrg() method is called, the call will be wrapped with a Hystrix circuit breaker. The circuit breaker will interrupt any call to the getLicensesByOrg() method any time the call takes longer than 1,000 milliseconds.</p>
+<p>This code example would be boring if the database is working properly. Let’s simulate the  getLicensesByOrg() method running into a slow database query by having the call take a little over a second on approximately every one in three calls. The following listing demonstrates this.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/<span class="function">The <span class="title">randomlyRunLong</span><span class="params">()</span> method gives you a one in three chance of a database call running <span class="keyword">long</span>.</span></span><br><span class="line"><span class="function">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title">randomlyRunLong</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Random rand = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> randomNum = rand.nextInt((<span class="number">3</span> - <span class="number">1</span>) + <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (randomNum == <span class="number">3</span>) sleep();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line"><span class="comment">//            You sleep for 11,000 milliseconds(11 seconds). Default Hystrix behavior is to time a call out after 1 second.</span></span><br><span class="line">            Thread.sleep(<span class="number">11000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">@HystrixCommand</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;License&gt; <span class="title">getLicensesByOrg</span><span class="params">(String organizationId)</span></span>&#123;</span><br><span class="line">randomlyRunLong();</span><br><span class="line"><span class="keyword">return</span> licenseRepository.findByOrganizationId(organizationId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>If you hit the <a href="http://localhost/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/licenses/" target="_blank" rel="noopener">http://localhost/v1/organizations/e254f8c-c442-4ebe-a82a-e2fc1d1ff78a/licenses/</a> endpoint enough times, you should see a timeout error message returned from the licensing service .<img src="/images/springmicroservices/springmicroC5P5.png" alt="springmicroC5P5">Now, with @HystrixCommand  annotation in place, the licensing service will interrupt a call out to its database if the query takes too long. If the database calls take longer than 1,000 milliseconds to execute the Hystrix code wrapping, your service call will throw a com.nextflix.hystrix.exception.HystrixRuntimeException<br>exception .</p>
+<h4 id="Timing-out-a-call-to-the-organization-microservice"><a href="#Timing-out-a-call-to-the-organization-microservice" class="headerlink" title="Timing out a call to the organization microservice"></a>Timing out a call to the organization microservice</h4><p>The beauty of using method-level annotations for tagging calls with circuit-breaker behavior is that it’s the same annotation whether you’re accessing a database or calling a microservice.</p>
+<p>For instance, in your licensing service you need to look up the name of the organition associated with the license. If you want to wrap your call to the organization service with a circuit breaker, it’s as simple as breaking the  RestTemplate call into its own method and annotating it with the @HystrixCommand annotation:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> Organization <span class="title">getOrganization</span><span class="params">(String organizationId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> organizationRestClient.getOrganization(organizationId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>NOTE</strong> While using the  @HystrixCommand is easy to implement, you do need<br>to be careful about using the default  @HystrixCommand annotation with no<br>configuration on the annotation. By default, when you specify a  @Hystrix-<br>Command annotation without properties, the annotation will place all remote<br>service calls under the same thread pool. This can introduce problems in<br>your application. Later in the chapter when we talk about implementing the<br>bulkhead pattern, we’ll show you how to segregate these remote service calls<br>into their own thread pools and configure the behavior of the thread pools to<br>be independent of one another.</p>
+<h4 id="Customizing-the-timeout-on-a-circuit-breaker"><a href="#Customizing-the-timeout-on-a-circuit-breaker" class="headerlink" title="Customizing the timeout on a circuit breaker"></a>Customizing the timeout on a circuit breaker</h4><p>One of the first questions I often run into when working with new developers and Hystrix is how they can customize the amount of time before a call is interrupted by Hystrix. This is easily accomplished by passing additional parameters into the<br>@HystrixCommand  annotation.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(</span><br><span class="line">    <span class="comment">//The commandProperties attribute lets you provide additional properties to customize Hystrix.</span></span><br><span class="line">commandProperties=</span><br><span class="line">&#123;<span class="meta">@HystrixProperty</span>(</span><br><span class="line">    <span class="comment">//The execution.isolation.thread.timeoutInMilliseconds is used to set the length of the timeout (in milliseconds) of the circuit breaker.</span></span><br><span class="line">name=<span class="string">"execution.isolation.thread.timeoutInMilliseconds"</span>,</span><br><span class="line">value=<span class="string">"12000"</span>)&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;License&gt; <span class="title">getLicensesByOrg</span><span class="params">(String organizationId)</span></span>&#123;</span><br><span class="line">randomlyRunLong();</span><br><span class="line"><span class="keyword">return</span> licenseRepository.findByOrganizationId(organizationId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Hystrix allows you to customize the behavior of the circuit breaker through the<br>commandProperties attribute. The  commandProperties attribute accepts an array of  HystrixProperty objects that can pass in custom properties to configure the Hystrix circuit breaker.You use the  execution.isolation.thread<br>.timeoutInMilliseconds property to set the maximum timeout a Hystrix call will<br>wait before failing to be 12 seconds.</p>
+<p>Now if you rebuild and rerun the code example, you’ll never get a timeout error<br>because your artificial timeout on the call is 11 seconds while your @HystrixCommand annotation is  now configured to only time out after 12 seconds.</p>
+<p><strong>On service timeouts</strong></p>
+<p>It should be obvious that I’m using a circuit breaker timeout of 12 seconds as a<br>teaching example. In a distributed environment, I often get nervous if I start hearing comments from development teams that a 1 second timeout on remote service calls is too low because their service X takes on average 5-6 seconds.</p>
+<p>This usually tells me that unresolved performance problems exist with the service<br>being called. Avoid the temptation to increase the default timeout on Hystrix calls unless you absolutely cannot resolve a slow running service call.</p>
+<p>If you do have a situation where part of your service calls are going to take longer<br>than other service calls, definitely look at segregating these service calls into separate thread pools.</p>
+<h3 id="Fallback-processing-1"><a href="#Fallback-processing-1" class="headerlink" title="Fallback processing"></a>Fallback processing</h3><p>Part of the beauty of the circuit breaker pattern is that because a “middle man” is<br>between the consumer of a remote resource and the resource itself, you have an<br>opportunity for the developer to intercept a service failure and choose an alternative course of action to take.</p>
+<p>In Hystrix, this is known as a fallback strategy and is easily implemented. Let’s see how to build a simple fallback strategy for your licensing database that simply returns a licensing object that says no licensing information is currently available. The following listing demonstrates this.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(</span><br><span class="line">           <span class="comment">//The fallbackMethod attribute defines a single function in your class that will be called if the call from Hystrix fails.</span></span><br><span class="line">           fallbackMethod = <span class="string">"buildFallbackLicenseList"</span></span><br><span class="line">   )</span><br><span class="line">   <span class="function"><span class="keyword">public</span> List&lt;License&gt; <span class="title">getLicensesByOrg</span><span class="params">(String organizationId)</span> </span>&#123;</span><br><span class="line">       logger.debug(<span class="string">"LicenseService.getLicensesByOrg  Correlation id: &#123;&#125;"</span>, UserContextHolder.getContext().getCorrelationId());</span><br><span class="line">       randomlyRunLong();</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> licenseRepository.findByOrganizationId(organizationId);</span><br><span class="line">   &#125;</span><br><span class="line"><span class="comment">//In the fallback method you return a hard-coded value.</span></span><br><span class="line">   <span class="function"><span class="keyword">private</span> List&lt;License&gt; <span class="title">buildFallbackLicenseList</span><span class="params">(String organizationId)</span> </span>&#123;</span><br><span class="line">       List&lt;License&gt; fallbackList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       License license = <span class="keyword">new</span> License()</span><br><span class="line">               .withId(<span class="string">"0000000-00-00000"</span>)</span><br><span class="line">               .withOrganizationId(organizationId)</span><br><span class="line">               .withProductName(<span class="string">"Sorry no licensing information currently available"</span>);</span><br><span class="line"></span><br><span class="line">       fallbackList.add(license);</span><br><span class="line">       <span class="keyword">return</span> fallbackList;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>To implement a fallback strategy with Hystrix you have to do two things. First, you need to add an attribute called  fallbackMethod to the  @HystrixCommand annotation. This attribute will contain the name of a method that will be called when Hystrix has to interrupt a call because it’s taking too long.</p>
+<p>The second thing you need to do is define a fallback method to be executed. This<br>fallback method must reside in the same class as the original method that was protected by the  @HystrixCommand . The fallback method must have the exact same method signature as the originating function as all of the parameters passed into the original method protected by the  @HystrixCommand will be passed to the fallback.</p>
+<p>In the example in listing 5.5, the fallback method  buildFallbackLicenseList() is simply constructing a single  License object containing dummy information. You could have your fallback method read this data from an alternative data source, but for demonstration purposes you’re going to construct a list that would have been returned by your original function call.</p>
+<p><strong>On fallbacks</strong></p>
+<p>The fallback strategy works extremely well in situations where your microservice is retrieving data and the call fails. In one organization I worked at, we had customer information stored in an operational data store (ODS) and also summarized in a data warehouse.</p>
+<p>Our happy path was to always retrieve the most recent data and calculate summary information for it on the fly. However, after a particularly nasty outage where a slow database connection took down multiple services, we decided to protect the service call that retrieved and summarized the customer’s information with a Hystrix fallback implementation. If the call to the ODS failed due to a performance problem or an error,we used a fallback to retrieve the summarized data from our data warehouse tables.</p>
+<p>Our business team decided that giving the customer’s older data was preferable to having the customer see an error or have the entire application crash. The key when choosing whether to use a fallback strategy is the level of tolerance your customers have to the age of their data and how important it is to never let them see the application having problems.</p>
+<p>Here are a few things to keep in mind as you determine whether you want to implement a fallback strategy:</p>
+<ol>
+<li>Fallbacks are a mechanism to provide a course of action when a resource has timed out or failed. If you find yourself using fallbacks to catch a timeout exception and then doing nothing more than logging the error, then you should probably use a standard try.. catch block around your service invocation,catch the HystrixRuntimeException, and put the logging logic in the try..catch block.</li>
+<li>Be aware of the actions you’re taking with your fallback functions. If you call out to another distributed service in your fallback service you may need to wrap the fallback with a @HystrixCommand annotation. Remember, the same failure that you’re experiencing with your primary course of action might also impact your secondary fallback option. Code defensively. I have been bitten hard when I failed to take this into account when using fallbacks.</li>
+</ol>
+<p>Now that you have your fallback in place, go ahead and call your endpoint again. This time when you hit it and encounter a timeout error (remember you have a one in 3 chance) you shouldn’t get an exception back from the service call, but instead have the dummy license values returned.</p>
+<p><img src="/images/springmicroservices/springmicroC5P6.jpg" alt="springmicroC5P6"></p>
+<h3 id="Implementing-the-bulkhead-pattern"><a href="#Implementing-the-bulkhead-pattern" class="headerlink" title="Implementing the bulkhead pattern"></a>Implementing the bulkhead pattern</h3><p>In a microservice-based application you’ll often need to call multiple microservices to complete a particular task. Without using a bulkhead pattern, the default behavior for these calls is that the calls are executed using the same threads that are reserved for handling requests for the entire Java container. In high volumes, performance problems with one service out of many can result in all of the threads for the Java container being maxed out and waiting to process work, while new requests for work back up.The Java container will eventually crash. The bulkhead pattern segregates remote resource calls in their own thread pools so that a single misbehaving service can be contained and not crash the container.</p>
+<p>Hystrix uses a thread pool to delegate all requests for remote services. By default,<br>all Hystrix commands will share the same thread pool to process requests. This thread pool will have 10 threads in it to process remote service calls and those remote services calls could be anything, including  REST -service invocations, database calls, and so on.<img src="/images/springmicroservices/springmicroC5P6.png" alt="springmicroC5P6"></p>
+<p>This model works fine when you have a small number of remote resources being<br>accessed within an application and the call volumes for the individual services are relatively evenly distributed. The problem is if you have services that have far higher volumes or longer completion times then other services, you can end up introducing thread exhaustion into your Hystrix thread pools because one service ends up dominating all of the threads in the default thread pool.</p>
+<p><img src="/images/springmicroservices/springmicroC5P7.png" alt="springmicroC5P7">Fortunately, Hystrix provides an easy-to-use mechanism for creating bulkheads<br>between different remote resource calls. Figure 5.8 shows what Hystrix managed<br>resources look like when they’re segregated into their own “bulkheads.”</p>
+<p>To implement segregated thread pools, you need to use additional attributes<br>exposed through the  @HystrixCommand annotation. Let’s look at some code that will</p>
+<ol>
+<li>Set up a separate thread pool for the  getLicensesByOrg() call</li>
+<li>Set the number of threads in the thread pool</li>
+<li>Set the queue size for the number of requests that can queue if the individual threads are busy</li>
+</ol>
+<p>The following listing demonstrates how to set up a bulkhead around all calls sur-<br>rounding the look-up of licensing data from our licensing service.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(fallbackMethod = <span class="string">"buildFallbackLicenseList"</span>,</span><br><span class="line"><span class="comment">//The threadPoolKey attribute defines the unique name of thread pool.</span></span><br><span class="line">threadPoolKey = <span class="string">"licenseByOrgThreadPool"</span>,</span><br><span class="line"><span class="comment">//The threadPoolProperties attribute lets you define and customize the behavior of the threadPool.</span></span><br><span class="line">threadPoolProperties =</span><br><span class="line">&#123;<span class="comment">//The coreSize attribute lets you define the maximum number of threads in the thread pool.</span></span><br><span class="line">    <span class="meta">@HystrixProperty</span>(name = <span class="string">"coreSize"</span>,value=<span class="string">"30"</span>),</span><br><span class="line"> <span class="comment">//The maxQueueSize lets you define a queue that sits in front of your thread pool and that can queue incoming requests.</span></span><br><span class="line"><span class="meta">@HystrixProperty</span>(name=<span class="string">"maxQueueSize"</span>, value=<span class="string">"10"</span>)&#125;</span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;License&gt; <span class="title">getLicensesByOrg</span><span class="params">(String organizationId)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> licenseRepository.findByOrganizationId(organizationId);</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>The first thing you should notice is that we’ve introduced a new attribute,  threadPoolkey , to your  @HystrixCommand annotation. This signals to Hystrix that you want to set up a new thread pool. If you set no further values on the thread pool,Hystrix sets up a thread pool keyed off the name in the threadPoolKey attribute, but will use all default values for how the thread pool is configured.</p>
+<p>To customize your thread pool, you use the  threadPoolProperties attribute on<br>the  @HystrixCommand . This attribute takes an array of  HystrixProperty  objects.These  HystrixProperty objects can be used to control the behavior of the thread pool. You can set the size of the thread pool by using the  coreSize attribute.</p>
+<p>You can also set up a queue in front of the thread pool that will control how many<br>requests will be allowed to back up when the threads in the thread pool are busy. This queue size is set by the  maxQueueSize attribute. Once the number of requests exceeds the queue size, any additional requests to the thread pool will fail until there is room in the queue.</p>
+<p>Note two things about the  maxQueueSize attribute. First, if you set the value to -1,a Java  SynchronousQueue will be used to hold all incoming requests. A synchronous queue will essentially enforce that you can never have more requests in process then the number of threads available in the thread pool. Setting the  maxQueueSize to a value greater than one will cause Hystrix to use a Java  LinkedBlockingQueue . The use of  a LinkedBlockingQueue  allows the developer to queue up requests even if all threads are busy processing requests.</p>
+<p>The second thing to note is that the  maxQueueSize attribute can only be set when the thread pool is first initialized (for example, at startup of the application). Hystrix does allow you to dynamically change the size of the queue by using the  queueSizeRejectionThreshold  attribute, but this attribute can only be set when the maxQueueSize attribute is a value greater than 0.<br>What’s the proper sizing for a custom thread pool? Netflix recommends the following formula:<br>(requests per second at peak when the service is healthy * 99th percentile latency in seconds) + small amount of extra threads for overhead<br>You often don’t know the performance characteristics of a service until it has been under load. A key indicator that the thread pool properties need to be adjusted is when a service call is timing out even if the targeted remote resource is healthy.</p>
+<h3 id="Getting-beyond-the-basics-fine-tuning-Hystrix"><a href="#Getting-beyond-the-basics-fine-tuning-Hystrix" class="headerlink" title="Getting beyond the basics; fine-tuning Hystrix"></a>Getting beyond the basics; fine-tuning Hystrix</h3><p>At this point we’ve looked at the basic concepts of setting up a circuit breaker and<br>bulkhead pattern using Hystrix. We’re now going to go through and see how to really customize the behavior of the Hystrix’s circuit breaker. Remember, Hystrix does more than time out long-running calls. Hystrix will also monitor the number of times a call fails and if enough calls fail, Hystrix will automatically prevent future calls from reaching the service by failing the call before the requests ever hit the remote resource.</p>
+<p>There are two reasons for this. First, if a remote resource is having performance<br>problems, failing fast will prevent the calling application from having to wait for a call to time out. This significantly reduces the risk that the calling application or service will experience its own resource exhaustion problems and crashes. Second, failing fastand preventing calls from service clients will help a struggling service keep up with its load and not crash completely under the load. Failing fast gives the system experiencing performance degradation time to recover.</p>
+<p>To understand how to configure the circuit breaker in Hystrix, you need to first<br>understand the flow of how Hystrix determines when to trip the circuit breaker. Figure 5.9 shows the decision process used by Hystrix when a remote resource call fails.<img src="/images/springmicroservices/springmicroC5P8.png" alt="springmicroC5P8"></p>
+<p>Whenever a Hystrix command encounters an error with a service, it will begin a 10 second timer that will be used to examine how often the service call is failing. This 10 second window is configurable. The first thing Hystrix does is look at the number of calls that have happened within the 10-second window. If the number of calls is less than a minimum number of calls that need to occur within the window, then Hystrix will not take action even if several of the calls failed. For example, the default number of calls that need to occur before Hystrix will even consider action within the 10-second window is 20. If 15 of those calls fail within a 10-second period, not enough of the calls have occurred for them to “trip” the circuit breaker even if all 15 calls failed. Hystrix will continue letting calls go through to the remote service.</p>
+<p>When the minimum number of remote resource calls has occurred within the 10-<br>second window, Hystrix will begin looking at the percentage of overall failures that have occurred. If the overall percentage of failures is over the threshold, Hystrix will trigger the circuit breaker and fail almost all future calls. As we’ll discuss shortly, Hystrix will let part of the calls through to “test” and see if the service is backing up. The default value for the error threshold is 50%.</p>
+<p>If that percentage has been exceeded, Hystrix will “trip” the circuit breaker and<br>prevent further calls from hitting the remote resource. If that percentage of remote calls hasn’t been triggered and the 10-second window has been passed, Hystrix will reset the circuit breaker statistics.</p>
+<p>When Hystrix has “tripped” the circuit breaker on a remote call, it will try to start a new window of activity. Every five seconds (this value is configurable), Hystrix will let acall through to the struggling service. If the call succeeds, Hystrix will reset the circuit breaker and start letting calls through again. If the call fails, Hystrix will keep the circuit breaker closed and try again in another five seconds.</p>
+<p>Based on this, you can see that there are five attributes you can use to customize<br>the circuit breaker behavior. The  @HystrixCommand annotation exposes these five attributes via the  commandPoolProperties attribute. While the  threadPoolProperties attribute allows you to set the behavior of the underlying thread pool used in the Hystrix command, the  commandPoolProperties attribute allows you to customize the behavior of the circuit breaker associated with Hystrix command.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand</span>(</span><br><span class="line">fallbackMethod = <span class="string">"buildFallbackLicenseList"</span>,</span><br><span class="line">threadPoolKey = <span class="string">"licenseByOrgThreadPool"</span>,</span><br><span class="line">threadPoolProperties =&#123;</span><br><span class="line"><span class="meta">@HystrixProperty</span>(name = <span class="string">"coreSize"</span>,value=<span class="string">"30"</span>),</span><br><span class="line"><span class="meta">@HystrixProperty</span>(name=<span class="string">"maxQueueSize"</span>value=<span class="string">"10"</span>),</span><br><span class="line">&#125;,</span><br><span class="line">commandPoolProperties =&#123;</span><br><span class="line"><span class="meta">@HystrixProperty</span>(</span><br><span class="line">name=<span class="string">"circuitBreaker.requestVolumeThreshold"</span>,</span><br><span class="line"> value=<span class="string">"10"</span>),</span><br><span class="line"> <span class="meta">@HystrixProperty</span>(</span><br><span class="line">name=<span class="string">"circuitBreaker.errorThresholdPercentage"</span>,</span><br><span class="line"> value=<span class="string">"75"</span>),</span><br><span class="line"><span class="meta">@HystrixProperty</span>(</span><br><span class="line">name=<span class="string">"circuitBreaker.sleepWindowInMilliseconds"</span>,</span><br><span class="line">value=<span class="string">"7000"</span>),</span><br><span class="line"> <span class="meta">@HystrixProperty</span>(</span><br><span class="line">     name=<span class="string">"metrics.rollingStats.timeInMilliseconds"</span>,</span><br><span class="line"> value=<span class="string">"15000"</span>)</span><br><span class="line"><span class="meta">@HystrixProperty</span>(</span><br><span class="line">name=<span class="string">"metrics.rollingStats.numBuckets"</span>,</span><br><span class="line"> value=<span class="string">"5"</span>)&#125;</span><br><span class="line">)</span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;License&gt; <span class="title">getLicensesByOrg</span><span class="params">(String organizationId)</span></span>&#123;</span><br><span class="line"> logger.debug(<span class="string">"getLicensesByOrg Correlation id: &#123;&#125;"</span>,</span><br><span class="line"> UserContextHolder</span><br><span class="line">.getContext()</span><br><span class="line">.getCorrelationId());</span><br><span class="line">randomlyRunLong();</span><br><span class="line"><span class="keyword">return</span> licenseRepository.findByOrganizationId(organizationId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The first property, circuitBreaker.requestVolumeTheshold, controls the amount of consecutive calls that must occur within a 10-second window before Hystrix will consider tripping the circuit breaker for the call. The second property, circuitBreaker.errorThresholdPercentage, is the percentage of calls that must fail<br>(due to timeouts, an exception being thrown, or a HTTP 500 being returned) after the circuitBreaker.requestVolumeThreshold value has been passed before the circuit breaker it tripped. The last property in the previous code example, circuitBreaker.sleepWindowInMilliseconds, is the amount of time Hystrix will sleep once the circuit breaker is tripped before Hystrix will allow another call through to<br>see if the service is healthy again.</p>
+<p>The last two Hystrix properties (metrics.rollingStats.timeInMilliseconds and metrics.rollingStats.numBuckets) are named a bit differently than the previous properties, but they still control the behavior of the circuit breaker. The first property, metrics.rollingStats.timeInMilliseconds, is used to control the size of the window that will be used by Hystrix to monitor for problems with a service call. The default value for this is 10,000 milliseconds (that is, 10 seconds).</p>
+<p>The second property, metrics.rollingStats.numBuckets, controls the number of times statistics are collected in the window you’ve defined. Hystrix collects metrics in buckets during this window and checks the stats in those buckets to determine if the remote resource call is failing. The number of buckets defined must evenly divide into the overall number of milliseconds set for rollingStatus.inMilliseconds stats. For example, in your custom settings in the previous listing, Hystrix will use a 15-second window and collect statistics data into five buckets of three seconds in length. </p>
+<p><strong>NOTE</strong> The smaller the statistics window you check in and the greater the number of buckets you keep within the window will drive up CPU and memory utilization on a high-volume service. Be aware of this and fight the temptation to set the metrics collection windows and buckets to be fine-grained until you need that level of visibility .</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>一人闯荡，年轻无为。保持一颗热爱技术的心，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Hunter 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Hunter 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Hunter
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://hunterhdq.github.io/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/" title="Client Resiliency patterns with Spring Cloud and Netflix Hystrix">https://hunterhdq.github.io/2019/03/29/Client-Resiliency-patterns-with-Spring-Cloud-and-Netflix-Hystrix/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          
+            <a href="/tags/Spring-Microservices/" rel="tag"><i class="fa fa-tag"></i> Spring Microservices</a>
+          
+            <a href="/tags/微服务/" rel="tag"><i class="fa fa-tag"></i> 微服务</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/01/Spring-Boot/" rel="next" title="Spring Boot">
+                <i class="fa fa-chevron-left"></i> Spring Boot
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MjE3Ny8xODcyNA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Hunter">
+            
+              <p class="site-author-name" itemprop="name">Hunter</p>
+              <p class="site-description motion-element" itemprop="description">技术驱动人生 创新改变生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/HunterHDQ" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/craftsperson" target="_blank" title="WeiBo">
+                      
+                        <i class="fa fa-fw fa-globe"></i>WeiBo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:craftsperson@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/HunterHDQ" title="友链出租" target="_blank">友链出租</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-are-client-side-resiliency-patterns"><span class="nav-number">2.</span> <span class="nav-text">What are client-side resiliency patterns</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Client-side-load-balancing"><span class="nav-number">2.1.</span> <span class="nav-text">Client-side load balancing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Circuit-breaker"><span class="nav-number">2.2.</span> <span class="nav-text">Circuit breaker</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fallback-processing"><span class="nav-number">2.3.</span> <span class="nav-text">Fallback processing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bulkheads"><span class="nav-number">2.4.</span> <span class="nav-text">Bulkheads</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Why-client-resiliency-matters"><span class="nav-number">2.5.</span> <span class="nav-text">Why client resiliency matters</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setting-up-the-licensing-server-to-use-Spring-Cloud-and-Hystrix"><span class="nav-number">3.</span> <span class="nav-text">Setting up the licensing server to use Spring Cloud and Hystrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implementing-a-circuit-breaker-using-Hystrix"><span class="nav-number">4.</span> <span class="nav-text">Implementing a circuit breaker using Hystrix</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Timing-out-a-call-to-the-organization-microservice"><span class="nav-number">4.1.</span> <span class="nav-text">Timing out a call to the organization microservice</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Customizing-the-timeout-on-a-circuit-breaker"><span class="nav-number">4.2.</span> <span class="nav-text">Customizing the timeout on a circuit breaker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fallback-processing-1"><span class="nav-number">5.</span> <span class="nav-text">Fallback processing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Implementing-the-bulkhead-pattern"><span class="nav-number">6.</span> <span class="nav-text">Implementing the bulkhead pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Getting-beyond-the-basics-fine-tuning-Hystrix"><span class="nav-number">7.</span> <span class="nav-text">Getting beyond the basics; fine-tuning Hystrix</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+<div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Hunter</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">44.4k</span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("EKNc1x0lSCbfM6tcyQpGkqsz-gzGzoHsz", "tHjYUfIAwAzO9YbxlaYiYBpV");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+
+</html>
